@@ -16,6 +16,11 @@ public class MemberReportGenerator {
 		return;
 	} //End MemberReportGenerator() constructor.
 	
+	/**
+	 * 
+	 * @param memberID
+	 * @param memberList
+	 */
 	public void printMemberReport(int memberID, ArrayList<Member> memberList) {
 		
 		

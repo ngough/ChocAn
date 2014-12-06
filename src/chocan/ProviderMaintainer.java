@@ -199,7 +199,7 @@ public class ProviderMaintainer {
 	 */
 	public void printProviders()
 	{
-		Iterator iterator = providerList.iterator();
+		Iterator<Provider> iterator = providerList.iterator();
 		while(iterator.hasNext())
 		{
 			System.out.println(iterator.next());

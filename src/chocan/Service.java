@@ -22,6 +22,7 @@ public class Service {
 	private int memberID;
 	private int providerID;
 	private int serviceCode;
+	private String comment;
 	
 	/**
 	 * Constructor.
@@ -101,7 +102,6 @@ public class Service {
 	public void setProviderID(int providerID) {
 		this.providerID = providerID;
 	}
-	private String comment;
 	
 	public String getServiceName() {
 		return serviceName;

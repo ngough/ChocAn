@@ -28,7 +28,7 @@ public class Provider extends Person {
 	/**
 	 * serviceList is for storing all the services provided by this provider.
 	 */
-	private ArrayList serviceList = new ArrayList<Service>();
+	private ArrayList<Service> serviceList = new ArrayList<Service>();
 	
 	/**
 	 * Constructor.
@@ -138,7 +138,7 @@ public class Provider extends Person {
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		
-		Iterator iterator = loginRecords.iterator();
+		Iterator<Date> iterator = loginRecords.iterator();
 		while(iterator.hasNext())
 		{
 			Date log = (Date) iterator.next();
@@ -196,10 +196,10 @@ public class Provider extends Person {
 	public void setProviderID(int providerID) {
 		this.providerID = providerID;
 	}
-	public ArrayList getServiceList() {
+	public ArrayList<Service> getServiceList() {
 		return serviceList;
 	}
-	public void setServiceList(ArrayList serviceList) {
+	public void setServiceList(ArrayList<Service> serviceList) {
 		this.serviceList = serviceList;
 	}
 	

@@ -25,7 +25,7 @@ public class Person {
 	/**
 	 * loginRecords is an arrayList to store all the login date and time.
 	 */
-	ArrayList loginRecords = new ArrayList<Date>();
+	ArrayList<Date> loginRecords = new ArrayList<Date>();
 	
 	
 	/**
@@ -41,7 +41,7 @@ public class Person {
 	 */
 	public void printLogins()
 	{
-		Iterator iterator = loginRecords.iterator();
+		Iterator<Date> iterator = loginRecords.iterator();
 		while(iterator.hasNext())
 		{
 			System.out.println(iterator.next());
