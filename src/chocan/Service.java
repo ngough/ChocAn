@@ -23,7 +23,11 @@ public class Service {
 	private int providerID;
 	private int serviceCode;
 	private String comment;
+	private double fee;
 	
+
+	
+
 	/**
 	 * Constructor.
 	 * @param serviceName Name of service such as "dietitian".
@@ -34,9 +38,9 @@ public class Service {
 	 * @param serviceCode 6 digit ID for a service, for example, 100000 stand for dietitian. 
 	 * @param comment optional for a service. Any additional info about this service.
 	 */
-	public Service(String serviceName,String date, Date tdate,int memberID, int providerID, int serviceCode, String comment)
+	public Service(String serviceName,String date, Date tdate,int memberID, int providerID, int serviceCode, String comment, double fee)
 	{ 
-		this.serviceName = serviceName;this.tdate=tdate;this.memberID=memberID;this.providerID=providerID;this.serviceCode=serviceCode;this.date=date;this.comment=comment;
+		this.serviceName = serviceName;this.tdate=tdate;this.memberID=memberID;this.providerID=providerID;this.serviceCode=serviceCode;this.date=date;this.comment=comment;this.fee=fee;
 	}
 
 	/**
@@ -53,6 +57,7 @@ public class Service {
 	public static Service makeService(String date,Date tdate, int memberID, int providerID, int serviceCode, String comment)
 	{
 		String serviceName="";
+		double fee = 0.00;
 		
 		File directoryFile = new File("Provider_Directory");
 		BufferedReader reader = null;
@@ -71,12 +76,13 @@ public class Service {
 				if(serviceInfo[0].equals(String.valueOf(serviceCode)))
 				{						
 					serviceName = serviceInfo[1];
+					fee = Double.parseDouble(serviceInfo[3]);
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new Service(serviceName,date,tdate,memberID, providerID,serviceCode,comment);
+		return new Service(serviceName,date,tdate,memberID, providerID,serviceCode,comment, fee);
 	}
 	public Date getTdate() {
 		return tdate;
@@ -126,6 +132,14 @@ public class Service {
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	
+	public double getFee() {
+		return fee;
+	}
+	
+	public void setFee(double fee) {
+		this.fee = fee;
 	}
 	
 	

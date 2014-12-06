@@ -1,6 +1,6 @@
-100000 dietitian
-100001 aerobics_exercise
-100003 yoga_exrcise
-100004 weightlifting
-100005 basic_nutrition
-100006 cardio_exercise
+100000 dietitian 100.50
+100001 aerobics_exercise 75.00
+100003 yoga_exercise 120.00
+100004 weightlifting 45.00
+100005 basic_nutrition 50.00
+100006 cardio_exercise 60.00
