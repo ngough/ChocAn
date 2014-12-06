@@ -1,4 +1,5 @@
 package chocan;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +9,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
+/**
+ * 
+ * @author lingxi
+ * Person class is for storing basic information of one person such as name, address, loginRecords.
+ * It can be extended to Provider, Manager, Member, and operator.
+ */
 public class Person {
 
 	String name;
@@ -15,18 +22,23 @@ public class Person {
 	String city;
 	String state;
 	String zip;
-//	String emailAddress;
+	/**
+	 * loginRecords is an arrayList to store all the login date and time.
+	 */
 	ArrayList loginRecords = new ArrayList<Date>();
 	
-	/* This method adds a login record to list */
+	
+	/**
+	 * addLoginRecords() method adds a login record to loginList.
+	 * @param d Date object. It has the form of mm/dd/yyyy hh:mm:ss.
+	 */
 	public void addLoginRecord(Date d) {
 		loginRecords.add(d);
 	}
-//
-//	public ArrayList<Date> getLoginRecords() {
-//		return loginRecords;
-//	}
 	
+	/**
+	 * printLogins() method prints out all the loginRecords of a person.
+	 */
 	public void printLogins()
 	{
 		Iterator iterator = loginRecords.iterator();

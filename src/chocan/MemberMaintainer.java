@@ -1,4 +1,5 @@
 package chocan;
+
 import java.util.ArrayList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,10 +15,26 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * 
+ * @author lingxi
+ *  1.memberMaintainer Class is responsible for storing and manipulating members.
+ * 	2.When a new MemberMaintaner class object gets instantiated, it read from a file which stores members' information,
+ * 	  creates member objects, and dump all members into an arrayList called memberList.
+ *  3.This class can then process those members in the list and write them back to file after all the changes been done.
+ */
 public class MemberMaintainer {
 
+	/**
+	 * providerList stores all member objects created from "Member" file.
+	 */
 	ArrayList memberList = new ArrayList<Member>();
 	
+	/**
+	 * Constructor. It reads "Members" file, creates Member objects according to file contents, 
+	 * and store them in memberList arrayList
+	 * @throws FileNotFoundException
+	 */
 	public MemberMaintainer() throws FileNotFoundException
 	{
 		//this method get all Members from file and write them into arrayList.
@@ -49,6 +66,11 @@ public class MemberMaintainer {
 		}
 	}
 	
+	/**
+	 * deleteMemberFromFile() method will delete a member from "Members" file. The method takes memberInfo which is
+	 * a string and tries to search it in "Members" file. If it's found, it removes that line from the file.
+	 * @param memberInfo a string contains member's name, address, id, feeDue. The format is the same as that in "Members" file.
+	 */
 	private static void deleteMemberFromFile(String memberInfo)
 	{
 		File inputFile = new File("Members");//open input file.
@@ -102,6 +124,11 @@ public class MemberMaintainer {
 		boolean success2 = tempFile.renameTo(inputFile);
 	}
 	
+	/**
+	 * VerifyMember() method will search the member in the memberList by matching an ID number. 
+	 * @param ID is the ID for the member which will be searched.
+	 * @return true if the member is found and false if it's not in the list or file.
+	 */
 	public boolean verifyMember(int ID)
 	{
 		boolean found=false;
@@ -116,6 +143,9 @@ public class MemberMaintainer {
 		return found;
 	}
 	
+	/**
+	 * printMembers() will prints out all the members and their information.
+	 */
 	public void printMembers()
 	{
 		Iterator iterator = memberList.iterator();
@@ -125,7 +155,12 @@ public class MemberMaintainer {
 		}
 	}
 	
-	public void loginMember(int memberID)
+	/**
+	 * loginMember() method logs in a member by taking that member's ID, finding that member in memberList, 
+	 * and writing current date+time into that member's loginRecords
+	 * @param memberID is the ID number for the member who wants to log in the system.
+	 */
+	public void loginMember(int memberID) throws IOException
 	{				
 		for(int i=0;i<memberList.size();i++)
 		{
@@ -138,6 +173,7 @@ public class MemberMaintainer {
 					Date date = new Date();
 					System.out.println("log in date and time: "+dateFormat.format(date)); //2014/12/01 15:59:48
 					((Member) memberList.get(i)).addLoginRecord(date);//add log in date to member login records.
+					((Member) memberList.get(i)).writeMemberLoginRecords(date);
 				}
 					
 				else
@@ -146,6 +182,11 @@ public class MemberMaintainer {
 		}
 	}
 	
+	/**
+	 * This method takes an ID and search through memberList. It will return the member with the given ID.
+	 * @param memberID is the ID for the member that we want to get.
+	 * @return member of given ID.
+	 */
 	public Member getMember(int memberID)
 	{
 		Member p = null;

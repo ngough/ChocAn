@@ -1,4 +1,5 @@
 package chocan;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,12 +13,43 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
-
+/**
+ * 
+ * @author lingxi
+ *  1.Provider class is responsible for storing information for one provider. 
+ *  2.It extends Person class.
+ */
 public class Provider extends Person {
 
+	/**
+	 * providerID is for storing ID for a provider.
+	 */
 	private int providerID;
+	/**
+	 * serviceList is for storing all the services provided by this provider.
+	 */
 	private ArrayList serviceList = new ArrayList<Service>();
 	
+	/**
+	 * Constructor.
+	 * @param n provider name.
+	 * @param s provider street.
+	 * @param c provider city.
+	 * @param st provider state.
+	 * @param z provider zipCode.
+	 * @param id provider ID.
+	 */
+	public Provider(String n, String s, String c, String st, String z,int id)
+	{
+		super(n,s,c,st,z);
+		providerID=id;
+	}
+	/**
+	 * writeServiceToFile() method writes a service information into service file belonging to this provider. 
+	 * The file name is provider name + "ServicesFile", for example, "Kevin_ServicesFile".
+	 * @param service a Service object. It contains information such as serviceName, serviceCode, memberID, providerID, serviceDate and time.
+	 * @throws IOException
+	 */
 	public void writeServiceToFile(Service service) throws IOException
 	{
 		File servicesFile = new File(name+"_ServicesFile");//open a temp file.
@@ -25,34 +57,38 @@ public class Provider extends Person {
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		
-		writer.append("Service info:"+"\n********************");
+		writer.append("Service info:"+System.getProperty("line.separator"));
+		writer.append("\n********************"+System.getProperty("line.separator"));
 		Date dtime = service.getTdate();
-		writer.append(dateFormat.format(dtime));
+		writer.append("Current date and time: "+dateFormat.format(dtime)+System.getProperty("line.separator"));
 		
 		String date = service.getDate();
-		writer.append(date);
+		writer.append("Date service was provided: "+date+System.getProperty("line.separator"));
 		
 //		String serviceName = service.getServiceName();
 //		writer.append(serviceName);
 		
 		int providerID = service.getProviderID();
-		writer.append(String.valueOf(providerID));
+		writer.append("Provider number: "+String.valueOf(providerID)+System.getProperty("line.separator"));
 		
 		int memberID = service.getMemberID();
-		writer.append(String.valueOf(memberID));
+		writer.append("Member number: "+String.valueOf(memberID)+System.getProperty("line.separator"));
 		
 		int serviceCode = service.getServiceCode();
-		writer.append(String.valueOf(serviceCode));
+		writer.append("Service code: "+String.valueOf(serviceCode)+System.getProperty("line.separator"));
 		
+		String comment = service.getComment();
+		writer.append("Comments: "+comment+System.getProperty("line.separator"));
+		
+		writer.append("********************"+System.getProperty("line.separator"));
 		writer.close();
 	}
-	
-	public Provider(String n, String s, String c, String st, String z,int id)
-	{
-		super(n,s,c,st,z);
-		providerID=id;
-	}
 
+	/**
+	 * SearchService() method searches a specific service in "Provider_Directory" which contains serviceCode and corresponding serviceName.
+	 * @param serviceCode is serviceCode for a service.
+	 * @return true if the serviceName corresponding to that serviceCode is found. Otherwise returns false.
+	 */
 	public boolean searchService(String serviceCode)
 	{
 		boolean valid = false;
@@ -74,7 +110,7 @@ public class Provider extends Person {
 				if(serviceInfo[0].equals(serviceCode))
 				{	
 					found = true;
-					System.out.println("The service corresponding to service code: "+serviceCode+"is "+serviceInfo[1]);
+					System.out.println("The service corresponding to service code "+serviceCode+" is "+serviceInfo[1]);
 					valid = true;
 					break;
 				}
@@ -90,7 +126,12 @@ public class Provider extends Person {
 		return valid;
 	}
 	
-	public void writeProviderLoginRecords(int id) throws IOException
+	/**
+	 * writeProviderLoginRecords() method writes a login date and time into file.
+	 * The file name is provider's name + "_LoginRecords", for example, Kevin_LoginRecords.
+	 * The file will contain date and time for each login session in each line. The format is yyyy/MM/dd HH:mm:ss.
+	 */
+	public void writeProviderLoginRecords() throws IOException
 	{
 		File logFile = new File(name+"_LoginRecords");//open a temp file.
 		FileWriter writer = new FileWriter(logFile,true);//initialize writer.
@@ -108,7 +149,9 @@ public class Provider extends Person {
 		writer.close();
 	}
 
-	/*This method reads provider directory file and print it out. */
+	/**
+	 * checkProviderDirectory() method will print out all the service code and its corresponding service name on the console.
+	 */
 	public void checkProviderDirectory()
 	{
 		File inputFile = new File("Provider_Directory");//open input file.
@@ -138,7 +181,9 @@ public class Provider extends Person {
 		} 
 	}
 	
-	
+	/**
+	 * toString() method returns a string of provider information.
+	 */
 	public String toString()
 	{
 		String s = name+" "+street+" "+city+" "+state+" "+zip+" "+providerID;

@@ -1,4 +1,5 @@
 package chocan;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -30,8 +31,15 @@ public class UserInterface {
 		System.out.println("Welcome to ChocAn!");
 		System.out.println("\t1. Provider log in.");
 		System.out.println("\t2. Manager log in.");
-		System.out.println("\t3. Operator log in.");		
+		System.out.println("\t3. Operator log in.");	
+		System.out.println("\t4. Exit.");
 		employeeType = in.nextInt();//take user input and determine employee type.
+		if(employeeType==4)
+		{
+			System.out.println("Good bye!");
+			System.exit(0);
+		}
+			
 	}
 	
 	public void login() throws FileNotFoundException
@@ -78,8 +86,7 @@ public class UserInterface {
 					int m_id = in.nextInt();//get member id.
 					boolean found = memberMaintainer.verifyMember(m_id);
 					if(found)
-					{
-						
+					{				
 						memberMaintainer.loginMember(m_id);
 					}
 					else
@@ -99,6 +106,7 @@ public class UserInterface {
 						if(memberMaintainer.getMember(memberId).isFeeDue())
 						{
 							System.out.println("Member has to pay membership fee first then get service!");
+							break;
 						}
 						else
 						{
@@ -107,7 +115,9 @@ public class UserInterface {
 					}
 					//2.Date.
 					System.out.println("Please enter the Date in the format MM-DD-YYYY");
-					String s_date = in.nextLine();
+					String s_date="";
+					Scanner keyboard = new Scanner(System.in);
+					s_date += keyboard.nextLine();
 					
 					//3.Date & Time.
 					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -116,7 +126,7 @@ public class UserInterface {
 					
 					//4.Service code.
 					System.out.println("Do you need to check Provider Directory? y/n ");
-					String c = in.nextLine();
+					String c = keyboard.nextLine();
 					if(c.equals("y")||c.equals("Y"))
 					{
 						providerMaintainer.getProvider(id).checkProviderDirectory();
@@ -126,22 +136,47 @@ public class UserInterface {
 					{
 						System.out.println("Please enter service code:");
 					}
-					String s_code = in.nextLine();
+					String s_code = keyboard.nextLine();
 					
 					//5.Verify the service.
 					while(true)
 					{
 						boolean s = providerMaintainer.getProvider(id).searchService(s_code);
-						if(s==true)
+						System.out.println("confirm the service y/n");
+						String confirmed = keyboard.nextLine();
+						if(s==true && confirmed.equals("y"))
 							break;
+						else if(confirmed.equals("n")){
+							System.out.println("Re-enter the service code: ");
+							s_code = keyboard.nextLine();
+						}
+						else if(s==false){
+							System.out.println("Re-enter the service code: ");
+							s_code = keyboard.nextLine();
+						}
+					}
+					
+					//6. add comment.
+					String comment="";
+					System.out.println("Add comment: y/n");
+					c = keyboard.nextLine();
+					if(c.equals("y")||c.equals("Y"))
+					{
+						comment += keyboard.nextLine();
+					}
+					else
+					{
+						//no comment. Does nothing.
 					}
 					
 					//6.Make a service.
-					Service service = Service.makeService(s_date,date, memberId, id, Integer.parseInt(s_code));
-					
+					Service service = Service.makeService(s_date,date, memberId, id, Integer.parseInt(s_code),comment);
+					providerMaintainer.getProvider(id).writeServiceToFile(service);
+					memberMaintainer.getMember(memberId).writeServiceToFile(service);
 					break;
 				case 4://log off.
-					providerMaintainer.getProvider(id).writeProviderLoginRecords(id);//save the log_in record.
+					providerMaintainer.getProvider(id).writeProviderLoginRecords();//save the log_in record.
+					
 					System.out.println("Good bye!");
 					System.exit(0);
 				}
