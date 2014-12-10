@@ -18,13 +18,13 @@ public class UserInterface {
 	ProviderMaintainer providerMaintainer =null;
 	ManagerMaintainer managerMaintainer = null;
 	
-	public UserInterface() throws FileNotFoundException
+	public UserInterface() throws IOException
 	{
 		done=false;
 		in = new Scanner(System.in);
 		memberMaintainer = new MemberMaintainer();
 		providerMaintainer = new ProviderMaintainer();
-		managerMaintainer = new ManagerMaintainer();
+
 	} //End UserInterface() constructor.
 	
 	/*This method prints welcome page and determine employee type.*/
@@ -104,7 +104,7 @@ public class UserInterface {
 					}
 					else
 					{
-						System.out.println("Mmeber does not exist.");
+						System.out.println("Member does not exist.");
 					}					
 					break;
 				case 2://print provider directory.
@@ -185,7 +185,7 @@ public class UserInterface {
 					}
 					
 					//6.Make a service.
-					Service service = Service.makeService(s_date,date, memberId, memberName, id, Integer.parseInt(s_code),comment);
+					Service service = Service.makeService(s_date,date, memberId, memberName, id, providerMaintainer.getProvider(id).getName(), Integer.parseInt(s_code),comment);
 					providerMaintainer.getProvider(id).writeServiceToFile(service);
 					memberMaintainer.getMember(memberId).writeServiceToFile(service);
 					break;

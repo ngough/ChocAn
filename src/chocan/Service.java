@@ -22,6 +22,7 @@ public class Service {
 	private int memberID;
 	private String memberName;
 	private int providerID;
+	private String providerName;
 	private int serviceCode;
 	private String comment;
 	private double fee;
@@ -39,9 +40,9 @@ public class Service {
 	 * @param serviceCode 6 digit ID for a service, for example, 100000 stand for dietitian. 
 	 * @param comment optional for a service. Any additional info about this service.
 	 */
-	public Service(String serviceName,String date, Date tdate,int memberID, String memberName, int providerID, int serviceCode, String comment, double fee)
+	public Service(String serviceName,String date, Date tdate,int memberID, String memberName, int providerID, String providerName, int serviceCode, String comment, double fee)
 	{ 
-		this.serviceName = serviceName;this.tdate=tdate;this.memberID=memberID;this.memberName=memberName;this.providerID=providerID;this.serviceCode=serviceCode;this.date=date;this.comment=comment;this.fee=fee;
+		this.serviceName = serviceName;this.tdate=tdate;this.memberID=memberID;this.memberName=memberName;this.providerID=providerID;this.providerName=providerName;this.serviceCode=serviceCode;this.date=date;this.comment=comment;this.fee=fee;
 	}
 
 	/**
@@ -55,7 +56,7 @@ public class Service {
 	 * @param comment
 	 * @return
 	 */
-	public static Service makeService(String date,Date tdate, int memberID, String memberName, int providerID, int serviceCode, String comment)
+	public static Service makeService(String date,Date tdate, int memberID, String memberName, int providerID, String providerName, int serviceCode, String comment)
 	{
 		String serviceName = "";
 		double fee = 0.00;
@@ -77,13 +78,13 @@ public class Service {
 				if(serviceInfo[0].equals(String.valueOf(serviceCode)))
 				{						
 					serviceName = serviceInfo[1];
-					fee = Double.parseDouble(serviceInfo[3]);
+					fee = Double.parseDouble(serviceInfo[2]);
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new Service(serviceName,date,tdate,memberID, memberName, providerID,serviceCode,comment, fee);
+		return new Service(serviceName,date,tdate,memberID, memberName, providerID,providerName,serviceCode,comment, fee);
 	}
 	public Date getTdate() {
 		return tdate;
@@ -115,7 +116,12 @@ public class Service {
 	public void setProviderID(int providerID) {
 		this.providerID = providerID;
 	}
-	
+	public String getProviderName() {
+		return providerName;
+	} //End getProviderName() method.
+	public void setProviderName(String providerName) {
+		this.providerName = providerName;
+	} //End setProviderName(String) method.
 	public String getServiceName() {
 		return serviceName;
 	}

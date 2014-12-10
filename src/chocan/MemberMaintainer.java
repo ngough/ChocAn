@@ -3,7 +3,6 @@ package chocan;
 import java.util.ArrayList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -28,7 +27,7 @@ public class MemberMaintainer {
 	/**
 	 * providerList stores all member objects created from "Member" file.
 	 */
-	ArrayList memberList = new ArrayList<Member>();
+	ArrayList<Member> memberList = new ArrayList<Member>();
 	
 	/**
 	 * Constructor. It reads "Members" file, creates Member objects according to file contents, 
@@ -61,7 +60,7 @@ public class MemberMaintainer {
 		try {
 			inputStream.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Error closing inputStream.");
 			e.printStackTrace();
 		}
 	}
@@ -148,7 +147,7 @@ public class MemberMaintainer {
 	 */
 	public void printMembers()
 	{
-		Iterator iterator = memberList.iterator();
+		Iterator<Member> iterator = memberList.iterator();
 		while(iterator.hasNext())
 		{
 			System.out.println(iterator.next());
@@ -200,4 +199,14 @@ public class MemberMaintainer {
 		}
 		return p;
 	}
+	
+	public void printMemberReports() {
+		MemberReportGenerator memberReportGenerator = new MemberReportGenerator();
+		
+		for(int i = 0; i < memberList.size(); i++) {
+			memberReportGenerator.printMemberReport((Member)memberList.get(i));
+		} //End for loop.
+		
+		return;
+	} //End printMemberReports() method.
 }

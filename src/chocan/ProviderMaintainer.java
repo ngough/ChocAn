@@ -224,5 +224,15 @@ public class ProviderMaintainer {
 		}
 		return p;
 	}
+	
+	public void printProviderReports() {
+		ProviderReportGenerator providerReportGenerator = new ProviderReportGenerator();
+		
+		for(int i = 0; i < providerList.size(); i++) {
+			providerReportGenerator.printProviderReport(providerList.get(i));
+		} //End for loop.
+		
+		return;
+	} //End printProviderReport() method.
 
 }

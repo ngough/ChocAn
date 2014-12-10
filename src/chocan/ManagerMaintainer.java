@@ -15,8 +15,34 @@ public class ManagerMaintainer {
 	/**
 	 * 
 	 */
-	public ManagerMaintainer() {
+	public ManagerMaintainer() throws IOException {
 		managerList = new ArrayList<Manager>();
+		
+		//this method get all managers from file and write them into arrayList.
+		FileReader inputStream = null;
+		try{
+			inputStream = new FileReader("Managers");
+			Scanner file = null;
+			file = new Scanner(inputStream);
+			
+			String delims = "[ ]+";
+			while(file.hasNext())
+			{
+				String info = file.nextLine();//read a line from file.
+				String[] managerInfo = info.split(delims);
+				Manager m = new Manager(managerInfo[0],managerInfo[1],managerInfo[2],managerInfo[3],managerInfo[4],Integer.parseInt(managerInfo[5]));
+				//put this newly found provider to providerList.
+				managerList.add(m);
+			} //End while.
+			 
+			file.close();
+			inputStream.close();
+		} //End try.
+		catch(Exception e){
+			System.out.println("File not found.");
+		} //End catch.
+		
+		return;
 	} //End ManagerMaintainer() constructor.
 	
 	/**
@@ -62,9 +88,11 @@ public class ManagerMaintainer {
 	} //End getManager(int) method.
 	
 	public void printReports(MemberMaintainer memberMaintainer, ProviderMaintainer providerMaintainer) {
+		providerMaintainer.printProviderReports();
+		memberMaintainer.printMemberReports();
+		System.out.println("Reports finished running.");
 		
-		
-		
+		return;
 	} //End printReports(MemberMaintainer, ProviderMaintainer) method.
 	
 	

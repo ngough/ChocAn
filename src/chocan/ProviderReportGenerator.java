@@ -9,15 +9,12 @@ import java.text.*;
  *
  */
 public class ProviderReportGenerator {
-	private double feeTotal; //Total fees paid on behalf of the member.
-	private int    consultationTotal; //Total number of consultations the member received.
+	
 	
 	/**
 	 * 
 	 */
 	public ProviderReportGenerator() {
-		feeTotal = 0.00;
-		consultationTotal = 0;
 		return;
 	} //End ProviderReportGenerator() constructor.
 	
@@ -26,31 +23,32 @@ public class ProviderReportGenerator {
 	 * @param providerID
 	 * @param providerList
 	 */
-	public void printProviderReport(int providerID, ArrayList<Provider> providerList) {
-		FileWriter         fw =            null;
-        File               file =          null;
-        Provider           provider =      null;
-        ArrayList<Service> serviceList =   null;
-        boolean            providerFound = false;
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
-        System.out.println(dateFormat.format(date));
+	public void printProviderReport(Provider provider) {
+		double             feeTotal =          0.00; //Total fees paid on behalf of the member.
+		int                consultationTotal = 0; //Total number of consultations the member received.
+		FileWriter         fw =                null;
+        File               file =              null;
+        //Provider           provider =          null;
+        ArrayList<Service> serviceList =       provider.getServiceList();
+        //boolean            providerFound =     false;
+        DateFormat         dateFormat =        new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date               date =              new Date();
         
-        for(int i = 0; i < providerList.size(); i++) {
-        	if(providerList.get(i).getProviderID() == providerID) {
-        		provider = providerList.get(i);
-        		serviceList = provider.getServiceList();
-        		providerFound = true;
-        		break;
-        	} //End if.
-        } //End for loop.
-        if(providerFound == false) {
-        	System.out.println("The given provider ID was not found in the list. Operation unsuccessful.");
-        	return;
-        } //End if.
+        //for(int i = 0; i < providerList.size(); i++) {
+        //	if(providerList.get(i).getProviderID() == providerID) {
+        //		provider = providerList.get(i);
+        //		serviceList = provider.getServiceList();
+        //		providerFound = true;
+        //		break;
+        //	} //End if.
+        //} //End for loop.
+        //if(providerFound == false) {
+        //	System.out.println("The given provider ID was not found in the list. Operation unsuccessful.");
+        //	return;
+        //} //End if.
         
         try {
-            file = new File(providerID+" "+dateFormat.format(date)+".txt");
+            file = new File(provider.getProviderID()+" "+dateFormat.format(date)+".txt");
             if(!file.exists()) {
                 file.createNewFile();
             } //End if.
@@ -81,12 +79,12 @@ public class ProviderReportGenerator {
             fw.close();
             
             //Write EFT report to file.
-            file = new File("EFT "+providerID+" "+dateFormat.format(date)+".txt");
+            file = new File("EFT "+provider.getProviderID()+" "+dateFormat.format(date)+".txt");
             if(!file.exists()) {
                 file.createNewFile();
             } //End if.
             fw = new FileWriter(file);
-            fw.write(provider.getName()+" "+providerID+" $"+feeTotal+System.getProperty("line.separator"));
+            fw.write(provider.getName()+" "+provider.getProviderID()+" $"+feeTotal+System.getProperty("line.separator"));
             fw.flush();
             fw.close();
             
