@@ -2,6 +2,7 @@ package chocan;
 
 import java.util.*;
 import java.io.*;
+import java.text.*;
 
 /**
  * @author Nate
@@ -31,6 +32,9 @@ public class ProviderReportGenerator {
         Provider           provider =      null;
         ArrayList<Service> serviceList =   null;
         boolean            providerFound = false;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        System.out.println(dateFormat.format(date));
         
         for(int i = 0; i < providerList.size(); i++) {
         	if(providerList.get(i).getProviderID() == providerID) {
@@ -46,7 +50,7 @@ public class ProviderReportGenerator {
         } //End if.
         
         try {
-            file = new File("ProviderReport-"+providerID+".txt");
+            file = new File(providerID+" "+dateFormat.format(date)+".txt");
             if(!file.exists()) {
                 file.createNewFile();
             } //End if.
@@ -60,13 +64,37 @@ public class ProviderReportGenerator {
             fw.write("State        : "+provider.getState()+System.getProperty("line.separator"));
             fw.write("Zip          : "+provider.getZip()+System.getProperty("line.separator"));
             fw.write("Services:"+System.getProperty("line.separator"));
-            
+            for(int i = 0; i < serviceList.size(); i++) {
+            	fw.write("Date of Service       : "+serviceList.get(i).getDate()+System.getProperty("line.separator"));
+            	fw.write("Date and Time Received: "+serviceList.get(i).getTdate().toString()+System.getProperty("line.separator"));
+            	fw.write("Member Name           : "+serviceList.get(i).getMemberName()+System.getProperty("line.separator"));
+            	fw.write("Member No.            : "+serviceList.get(i).getMemberID()+System.getProperty("line.separator"));
+            	fw.write("Service Code          : "+serviceList.get(i).getServiceCode()+System.getProperty("line.separator"));
+            	fw.write("Fee                   : "+serviceList.get(i).getFee()+System.getProperty("line.separator"));
+            	consultationTotal++;
+            	feeTotal = feeTotal + serviceList.get(i).getFee();
+            } //End for loop.
+            fw.write("Total Consultations: "+consultationTotal+System.getProperty("line.separator"));
+            fw.write("Total Fees         : "+feeTotal+System.getProperty("line.separator"));
+            fw.write("******************************"+System.getProperty("line.separator"));
             fw.flush();
             fw.close();
+            
+            //Write EFT report to file.
+            file = new File("EFT "+providerID+" "+dateFormat.format(date)+".txt");
+            if(!file.exists()) {
+                file.createNewFile();
+            } //End if.
+            fw = new FileWriter(file);
+            fw.write(provider.getName()+" "+providerID+" $"+feeTotal+System.getProperty("line.separator"));
+            fw.flush();
+            fw.close();
+            
             System.out.println("Report generated successfully!");
         } //End try.
         catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Error printing report.");
         } //End catch.
 		
         return;

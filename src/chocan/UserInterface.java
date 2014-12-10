@@ -16,6 +16,7 @@ public class UserInterface {
 	Scanner in = null;
 	MemberMaintainer memberMaintainer = null;
 	ProviderMaintainer providerMaintainer =null;
+	ManagerMaintainer managerMaintainer = null;
 	
 	public UserInterface() throws FileNotFoundException
 	{
@@ -23,7 +24,8 @@ public class UserInterface {
 		in = new Scanner(System.in);
 		memberMaintainer = new MemberMaintainer();
 		providerMaintainer = new ProviderMaintainer();
-	}
+		managerMaintainer = new ManagerMaintainer();
+	} //End UserInterface() constructor.
 	
 	/*This method prints welcome page and determine employee type.*/
 	public void printLoginPage()
@@ -57,26 +59,37 @@ public class UserInterface {
 					providerMaintainer.loginProvider(id);
 					break;
 				}
-				else
+				else {
 					System.out.println("Invalid provider!");
-			}
+				} //End else.
+			} //End else if.
 			else if(employeeType==2)//manager login
 			{
-				
-			}
+				System.out.println("Please enter your Manager ID: ");
+				id = in.nextInt();//get user input.
+				boolean validManager = managerMaintainer.verifyManager(id);//verify this id.
+				if(validManager)//if found this manager, we log him/her in.
+				{
+					managerMaintainer.loginManager(id);
+					break;
+				} //End if.
+				else {
+					System.out.println("Invalid manager!");
+				} //End else.
+			} //End else if.
 			else//operator login
 			{
 				
-			}
-		}
+			} //End else.
+		} //End while loop.
 		
-	}
+	} //End login() method.
 	
 	public void executeCommand() throws IOException
 	{
 		while(!done)
 		{
-			if(employeeType==1)
+			if(employeeType==1) //Provider
 			{
 				printProviderMenu();
 				switch(command)
@@ -101,8 +114,10 @@ public class UserInterface {
 					//1.Member ID.
 					System.out.println("Please enter member ID: ");
 					int memberId = in.nextInt();
+					String memberName = "";
 					if(memberMaintainer.verifyMember(memberId))//found this member.
 					{
+						memberName = memberMaintainer.getMember(memberId).getName();
 						if(memberMaintainer.getMember(memberId).isFeeDue())
 						{
 							System.out.println("Member has to pay membership fee first then get service!");
@@ -170,20 +185,44 @@ public class UserInterface {
 					}
 					
 					//6.Make a service.
-					Service service = Service.makeService(s_date,date, memberId, id, Integer.parseInt(s_code),comment);
+					Service service = Service.makeService(s_date,date, memberId, memberName, id, Integer.parseInt(s_code),comment);
 					providerMaintainer.getProvider(id).writeServiceToFile(service);
 					memberMaintainer.getMember(memberId).writeServiceToFile(service);
 					break;
 				case 4://log off.
 					providerMaintainer.getProvider(id).writeProviderLoginRecords();//save the log_in record.
-					
 					System.out.println("Good bye!");
 					System.exit(0);
-				}
-			}
-		}
-	}
+				} //End switch.
+			} //End if.
+			else if(employeeType == 2) { //Manager
+				printManagerMenu();
+				switch(command) {
+				case 1: //Run reports.
+					managerMaintainer.printReports(memberMaintainer, providerMaintainer);
+					break;
+				case 2: //Log off.
+					managerMaintainer.getManager(id).writeManagerLoginRecords();
+					System.out.println("Good bye!");
+					System.exit(0);
+				} //End switch.
+				
+			} //End else if.
+			else if(employeeType == 3) { //Operator
+				
+				//TODO Write operator code!
+				
+			} //End else if.
+			else { //Invalid input
+				System.out.println("Invalid input for user type! Terminating.");
+				System.exit(0);
+			} //End else.
+		} //End while loop.
+	} //End executeCommand() method.
 	
+	/**
+	 * 
+	 */
 	public void printProviderMenu()
 	{
 		System.out.println("");
@@ -192,18 +231,27 @@ public class UserInterface {
 		System.out.println("\t3. Bill ChocAn for a service.");
 		System.out.println("\t4. Log off.");//write all records to files.
 		command = in.nextInt();
-	}
+	} //End printProviderMenu() method.
 	
+	/**
+	 * 
+	 */
 	public void printManagerMenu()
 	{
-		
-	}
+		System.out.println("");
+		System.out.println("\t1. Run reports.");
+		System.out.println("\t2. Log off.");
+		command = in.nextInt();
+	} //End printManagerMenu() method.
+	
 	/**
 	 * 
 	 */
 	public void printOperatorMenu()
 	{
 		
-	}
+		//TODO Add operator menu choices!
+		
+	} //End printOperatorMenu() method.
 	
-}
+} //End UserInterface class.

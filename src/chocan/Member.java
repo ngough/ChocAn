@@ -23,7 +23,7 @@ public class Member extends Person{
 	/**
 	 * serviceList holds service objects received by this member.
 	 */
-	private ArrayList serviceList = new ArrayList<Service>();
+	private ArrayList<Service> serviceList = new ArrayList<Service>();
 	/**
 	 * feeDue is a boolean value. True means this member owns fee to ChocAn; False means the member has paid his/her membership fee.
 	 */
@@ -98,11 +98,17 @@ public class Member extends Person{
 		int memberID = service.getMemberID();
 		writer.append("Member number: "+String.valueOf(memberID)+System.getProperty("line.separator"));
 		
+		String memberName = this.getName();
+		writer.append("Member name: "+memberName+System.getProperty("line.separator"));
+		
 		int serviceCode = service.getServiceCode();
 		writer.append("Service code: "+String.valueOf(serviceCode)+System.getProperty("line.separator"));
 		
 		String comment = service.getComment();
 		writer.append("Comments: "+comment+System.getProperty("line.separator"));
+		
+		double fee = service.getFee();
+		writer.append("Fee: "+String.valueOf(fee)+System.getProperty("line.separator"));
 		
 		writer.append("********************"+System.getProperty("line.separator"));
 		writer.close();
@@ -124,4 +130,9 @@ public class Member extends Person{
 	public void setFeeDue(boolean feeDue) {
 		this.feeDue = feeDue;
 	}
+	
+	public ArrayList<Service> getServiceList() {
+		return serviceList;
+	}
+	
 }

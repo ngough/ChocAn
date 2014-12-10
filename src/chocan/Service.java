@@ -20,6 +20,7 @@ public class Service {
 	private String serviceName;
 	private Date tdate;
 	private int memberID;
+	private String memberName;
 	private int providerID;
 	private int serviceCode;
 	private String comment;
@@ -38,9 +39,9 @@ public class Service {
 	 * @param serviceCode 6 digit ID for a service, for example, 100000 stand for dietitian. 
 	 * @param comment optional for a service. Any additional info about this service.
 	 */
-	public Service(String serviceName,String date, Date tdate,int memberID, int providerID, int serviceCode, String comment, double fee)
+	public Service(String serviceName,String date, Date tdate,int memberID, String memberName, int providerID, int serviceCode, String comment, double fee)
 	{ 
-		this.serviceName = serviceName;this.tdate=tdate;this.memberID=memberID;this.providerID=providerID;this.serviceCode=serviceCode;this.date=date;this.comment=comment;this.fee=fee;
+		this.serviceName = serviceName;this.tdate=tdate;this.memberID=memberID;this.memberName=memberName;this.providerID=providerID;this.serviceCode=serviceCode;this.date=date;this.comment=comment;this.fee=fee;
 	}
 
 	/**
@@ -54,9 +55,9 @@ public class Service {
 	 * @param comment
 	 * @return
 	 */
-	public static Service makeService(String date,Date tdate, int memberID, int providerID, int serviceCode, String comment)
+	public static Service makeService(String date,Date tdate, int memberID, String memberName, int providerID, int serviceCode, String comment)
 	{
-		String serviceName="";
+		String serviceName = "";
 		double fee = 0.00;
 		
 		File directoryFile = new File("Provider_Directory");
@@ -82,7 +83,7 @@ public class Service {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new Service(serviceName,date,tdate,memberID, providerID,serviceCode,comment, fee);
+		return new Service(serviceName,date,tdate,memberID, memberName, providerID,serviceCode,comment, fee);
 	}
 	public Date getTdate() {
 		return tdate;
@@ -101,6 +102,12 @@ public class Service {
 	}
 	public void setMemberID(int memberID) {
 		this.memberID = memberID;
+	}
+	public String getMemberName() {
+		return memberName;
+	}
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
 	}
 	public int getProviderID() {
 		return providerID;

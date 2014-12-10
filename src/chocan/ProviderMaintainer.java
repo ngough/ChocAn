@@ -187,7 +187,7 @@ public class ProviderMaintainer {
 		{
 			if(((Provider) providerList.get(i)).getProviderID()==ID)
 			{//match given ID to those in arrayList.
-				found=true;//remove the provider.
+				found=true;
 				break;
 			}
 		}
