@@ -76,6 +76,8 @@ public class Member extends Person{
 	 */
 	public void writeServiceToFile(Service service) throws IOException
 	{
+		serviceList.add(service); //Add service to list first
+		
 		File servicesFile = new File(name+"_ServicesFile");//open a temp file.
 		FileWriter writer = new FileWriter(servicesFile,true);//initialize writer.
 		

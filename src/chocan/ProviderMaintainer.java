@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 /**
  * 
  * @author lingxi
@@ -356,8 +357,31 @@ public class ProviderMaintainer {
 	} //End readServicesFromFile() method.
 	
 	public void writeDataFiles() {
-		//TODO finish this
+		Provider currentProvider;
+		File providerFile;
+		PrintWriter pw;
 		
+		try {
+			providerFile = new File("Providers");
+			if(!providerFile.exists()) {
+				providerFile.createNewFile();
+			} //End if.
+			pw = new PrintWriter(providerFile);
+			pw.close(); //Clear the file.
+			//Write to the file.
+			pw = new PrintWriter("Providers");
+			for(int i = 0; i < providerList.size(); i++) {
+				currentProvider = providerList.get(i);
+				pw.println(currentProvider.getName()+" "+currentProvider.getStreet()+" "+currentProvider.getCity()+" "+currentProvider.getState()+" "+currentProvider.getZip()+" "+currentProvider.getProviderID());
+			} //End for.
+			
+			pw.flush();
+			pw.close();
+		} //End try.
+		catch(IOException e) {
+			System.out.println("Error writing back Provider file!");
+			e.printStackTrace();
+		} //End catch.
 		
 		return;
 	} //End writeDataFiles() method.

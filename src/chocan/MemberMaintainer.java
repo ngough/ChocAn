@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * 
@@ -294,9 +295,31 @@ public class MemberMaintainer {
 	} //End readServicesFromFile(ProviderMaintainer) method.
 	
 	public void writeDataFiles() {
-		//TODO finish this
+		Member currentMember;
+		File memberFile;
+		PrintWriter pw;
 		
-		
+		try {
+			memberFile = new File("Members");
+			if(!memberFile.exists()) {
+				memberFile.createNewFile();
+			} //End if.
+			pw = new PrintWriter(memberFile);
+			pw.close(); //Clear the file.
+			//Write to the file.
+			pw = new PrintWriter("Members");
+			for(int i = 0; i < memberList.size(); i++) {
+				currentMember = memberList.get(i);
+				pw.println(currentMember.getName()+" "+currentMember.getStreet()+" "+currentMember.getCity()+" "+currentMember.getState()+" "+currentMember.getZip()+" "+currentMember.getMemberID()+" "+currentMember.isFeeDue());
+			} //End for.
+			
+			pw.flush();
+			pw.close();
+		} //End try.
+		catch(IOException e) {
+			System.out.println("Error writing back Member file!");
+			e.printStackTrace();
+		} //End catch.
 		
 		return;
 	} //End writeDataFiles() method.

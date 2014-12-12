@@ -150,10 +150,32 @@ public class ManagerMaintainer {
 		return;
 	} //End printReports(MemberMaintainer, ProviderMaintainer) method.
 	
-	public void writeDataFiles() {
-		//TODO finish this
+	public void writeDataFiles() throws IOException {
+		Manager currentManager;
+		File managerFile;
+		PrintWriter pw;
 		
-		
+		try {
+			managerFile = new File("Managers");
+			if(!managerFile.exists()) {
+				managerFile.createNewFile();
+			} //End if.
+			pw = new PrintWriter(managerFile);
+			pw.close(); //Clear the file.
+			//Write to the file.
+			pw = new PrintWriter("Managers");
+			for(int i = 0; i < managerList.size(); i++) {
+				currentManager = managerList.get(i);
+				pw.println(currentManager.getName()+" "+currentManager.getStreet()+" "+currentManager.getCity()+" "+currentManager.getState()+" "+currentManager.getZip()+" "+currentManager.getManagerID());
+			} //End for.
+			
+			pw.flush();
+			pw.close();
+		} //End try.
+		catch(IOException e) {
+			System.out.println("Error writing back Manager file!");
+			e.printStackTrace();
+		} //End catch.
 		
 		return;
 	} //End writeDataFiles() method.

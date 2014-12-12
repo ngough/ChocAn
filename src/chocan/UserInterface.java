@@ -35,7 +35,7 @@ public class UserInterface {
 	} //End UserInterface() constructor.
 	
 	/*This method prints welcome page and determine employee type.*/
-	public void printLoginPage()
+	public void printLoginPage() throws IOException
 	{
 		System.out.println("Welcome to ChocAn!");
 		System.out.println("\t1. Provider log in.");
@@ -45,6 +45,7 @@ public class UserInterface {
 		employeeType = in.nextInt();//take user input and determine employee type.
 		if(employeeType==4)
 		{
+			writeDataFiles();
 			System.out.println("Good bye!");
 			System.exit(0);
 		}
@@ -86,6 +87,9 @@ public class UserInterface {
 			} //End else if.
 			else//operator login
 			{
+				//TODO write operator login
+				
+				
 				
 			} //End else.
 		} //End while loop.
@@ -267,10 +271,12 @@ public class UserInterface {
 	/**
 	 * 
 	 */
-	public void writeDataFiles() {
+	public void writeDataFiles() throws IOException {
 		providerMaintainer.writeDataFiles();
 		memberMaintainer.writeDataFiles();
 		managerMaintainer.writeDataFiles();
+		
+		System.out.println("Data written to disk.");
 		return;
 	} //End writeDataFiles() method.
 	
