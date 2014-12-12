@@ -209,4 +209,96 @@ public class MemberMaintainer {
 		
 		return;
 	} //End printMemberReports() method.
-}
+	
+	public void addMember(Member m) {
+		memberList.add(m);
+	} //End addMember(Member) method.
+	
+	public void readServicesFromFile(ProviderMaintainer providerMaintainer) {
+		//Read services into members' service lists.
+		File serviceFile;
+		Scanner scanner = null;
+		String currentLine;
+		String lineSegment;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		String date;
+		Date tDate;
+		int providerNumber;
+		int memberNumber;
+		String memberName;
+		int serviceCode;
+		String comment;
+		
+		try {
+			for(int i = 0; i < memberList.size(); i++) {
+				serviceFile = new File(memberList.get(i).getName()+"_ServicesFile");
+				if(!serviceFile.exists()) {
+					//No services for this member.
+					continue;
+				} //End if.
+				scanner = new Scanner(serviceFile);
+				
+				//old
+				while(scanner.hasNext()) {
+					currentLine = scanner.nextLine();
+					if(currentLine.contains("********************")) {
+						if(scanner.hasNext()) {
+							currentLine = scanner.nextLine();
+							if(currentLine.contains("Current date and time:")) {
+								//get current date when service was entered.
+								lineSegment = currentLine.substring(22);
+								tDate = dateFormat.parse(lineSegment);
+								//Get the date service was received.
+								currentLine = scanner.nextLine();
+								date = currentLine.substring(27);
+								//Get the provider number.
+								currentLine = scanner.nextLine();
+								providerNumber = Integer.parseInt(currentLine.substring(17));
+								//Get the member number.
+								currentLine = scanner.nextLine();
+								memberNumber = Integer.parseInt(currentLine.substring(15));
+								//Get the member name.
+								currentLine = scanner.nextLine();
+								memberName = currentLine.substring(13);
+								//Get the service code.
+								currentLine = scanner.nextLine();
+								serviceCode = Integer.parseInt(currentLine.substring(14));
+								//Get the comments.
+								currentLine = scanner.nextLine();
+								comment = currentLine.substring(10);
+								
+								//Create the Service object and add it to this provider's list.
+								memberList.get(i).getServiceList().add(Service.makeService(date, tDate, memberNumber, memberName, providerNumber, providerMaintainer.getProvider(providerNumber).getName(), serviceCode, comment));
+								
+								//TODO remove this test stuff.
+								Service s = Service.makeService(date, tDate, memberNumber, memberName, providerNumber, providerMaintainer.getProvider(providerNumber).getName(), serviceCode, comment);
+								System.out.println(s.toString() + "member service");
+							} //End if.
+							else {
+								continue;
+							} //End else.
+						} //End if.
+					} //End if.
+				} //End while loop.
+			} //End for.
+			
+			scanner.close();
+			System.out.println("Member service lists have been initialized.");
+		} //End try.
+		catch(Exception e) {
+			System.out.println("Error reading services into members' service lists.");
+			e.printStackTrace();
+		} //End catch.
+		
+		return;
+	} //End readServicesFromFile(ProviderMaintainer) method.
+	
+	public void writeDataFiles() {
+		//TODO finish this
+		
+		
+		
+		return;
+	} //End writeDataFiles() method.
+	
+} //End MemberMaintainer class.

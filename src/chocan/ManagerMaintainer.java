@@ -39,7 +39,7 @@ public class ManagerMaintainer {
 			inputStream.close();
 		} //End try.
 		catch(Exception e){
-			System.out.println("File not found.");
+			System.out.println("Managers file not found.");
 		} //End catch.
 		
 		return;
@@ -90,10 +90,72 @@ public class ManagerMaintainer {
 	public void printReports(MemberMaintainer memberMaintainer, ProviderMaintainer providerMaintainer) {
 		providerMaintainer.printProviderReports();
 		memberMaintainer.printMemberReports();
-		System.out.println("Reports finished running.");
 		
+		//Print summary report
+		int totalConsults = 0;
+		double totalFees = 0.0;
+		int totalProviders = 0;
+		File providerFile = null;
+		BufferedReader reader = null;
+		String currentLine = new String();
+		String delims = "[ ]+";
+		File file;
+		FileWriter fw;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+		Date date = new Date();
+		
+		try {
+			providerFile = new File("Providers");
+			reader = new BufferedReader(new FileReader(providerFile));
+            file = new File("Summary "+dateFormat.format(date));
+            if(!file.exists()) {
+                file.createNewFile();
+            } //End if.
+            fw = new FileWriter(file);
+            fw.write("Summary Report"+System.getProperty("line.separator"));
+            fw.write("******************************"+System.getProperty("line.separator"));
+            while((currentLine = reader.readLine()) != null) {			    
+            	totalConsults = 0;
+            	totalFees = 0.0;
+            	String[] providerInfo = currentLine.split(delims);
+				if(providerMaintainer.getProvider(Integer.parseInt(providerInfo[5])).getServiceList().size() != 0) {
+					fw.write("Provider's name    : "+providerInfo[0]+System.getProperty("line.separator"));
+					totalProviders++;
+					ArrayList<Service> serviceList = providerMaintainer.getProvider(Integer.parseInt(providerInfo[5])).getServiceList();
+					for(int i = 0; i < serviceList.size(); i++) {
+						totalConsults++;
+						totalFees = totalFees + serviceList.get(i).getFee();
+					} //End for loop.
+					
+					fw.write("Total consultations: "+totalConsults+System.getProperty("line.separator"));
+					fw.write("Total fees         : "+totalFees+System.getProperty("line.separator"));
+					fw.write("*****"+System.getProperty("line.separator"));
+				} //End if.
+			} //End while loop.
+            
+            fw.write("Total providers    : "+totalProviders+System.getProperty("line.separator"));
+            fw.write("Total Consultations: "+providerMaintainer.getTotalConsults()+System.getProperty("line.separator"));
+            fw.write("Total Fees         : "+providerMaintainer.getTotalFees()+System.getProperty("line.separator"));
+            fw.write("******************************"+System.getProperty("line.separator"));
+            
+            fw.flush();
+            fw.close();
+            reader.close();
+		} //End try.
+		catch (IOException e) {
+			e.printStackTrace();
+		} //End catch.
+		
+		System.out.println("Reports finished running.");
 		return;
 	} //End printReports(MemberMaintainer, ProviderMaintainer) method.
 	
+	public void writeDataFiles() {
+		//TODO finish this
+		
+		
+		
+		return;
+	} //End writeDataFiles() method.
 	
 } //End ManagerMaintainer class.

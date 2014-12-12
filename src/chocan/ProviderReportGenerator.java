@@ -28,27 +28,16 @@ public class ProviderReportGenerator {
 		int                consultationTotal = 0; //Total number of consultations the member received.
 		FileWriter         fw =                null;
         File               file =              null;
-        //Provider           provider =          null;
         ArrayList<Service> serviceList =       provider.getServiceList();
-        //boolean            providerFound =     false;
-        DateFormat         dateFormat =        new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        DateFormat         dateFormat =        new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
         Date               date =              new Date();
         
-        //for(int i = 0; i < providerList.size(); i++) {
-        //	if(providerList.get(i).getProviderID() == providerID) {
-        //		provider = providerList.get(i);
-        //		serviceList = provider.getServiceList();
-        //		providerFound = true;
-        //		break;
-        //	} //End if.
-        //} //End for loop.
-        //if(providerFound == false) {
-        //	System.out.println("The given provider ID was not found in the list. Operation unsuccessful.");
-        //	return;
-        //} //End if.
-        
+        if(serviceList.size() == 0) {
+        	return;
+        } //End if.
         try {
-            file = new File(provider.getProviderID()+" "+dateFormat.format(date)+".txt");
+            file = new File(provider.getProviderID()+" "+dateFormat.format(date).toString());
+            System.out.println(provider.getProviderID()+" "+dateFormat.format(date).toString());
             if(!file.exists()) {
                 file.createNewFile();
             } //End if.
@@ -62,6 +51,7 @@ public class ProviderReportGenerator {
             fw.write("State        : "+provider.getState()+System.getProperty("line.separator"));
             fw.write("Zip          : "+provider.getZip()+System.getProperty("line.separator"));
             fw.write("Services:"+System.getProperty("line.separator"));
+            fw.write("***********************"+System.getProperty("line.separator"));
             for(int i = 0; i < serviceList.size(); i++) {
             	fw.write("Date of Service       : "+serviceList.get(i).getDate()+System.getProperty("line.separator"));
             	fw.write("Date and Time Received: "+serviceList.get(i).getTdate().toString()+System.getProperty("line.separator"));
@@ -69,6 +59,7 @@ public class ProviderReportGenerator {
             	fw.write("Member No.            : "+serviceList.get(i).getMemberID()+System.getProperty("line.separator"));
             	fw.write("Service Code          : "+serviceList.get(i).getServiceCode()+System.getProperty("line.separator"));
             	fw.write("Fee                   : "+serviceList.get(i).getFee()+System.getProperty("line.separator"));
+            	fw.write("***********************"+System.getProperty("line.separator"));
             	consultationTotal++;
             	feeTotal = feeTotal + serviceList.get(i).getFee();
             } //End for loop.

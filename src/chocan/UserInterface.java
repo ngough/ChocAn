@@ -1,9 +1,13 @@
 package chocan;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -24,7 +28,10 @@ public class UserInterface {
 		in = new Scanner(System.in);
 		memberMaintainer = new MemberMaintainer();
 		providerMaintainer = new ProviderMaintainer();
-
+		providerMaintainer.readServicesFromFile();
+		memberMaintainer.readServicesFromFile(providerMaintainer);
+		managerMaintainer = new ManagerMaintainer();
+		
 	} //End UserInterface() constructor.
 	
 	/*This method prints welcome page and determine employee type.*/
@@ -191,6 +198,7 @@ public class UserInterface {
 					break;
 				case 4://log off.
 					providerMaintainer.getProvider(id).writeProviderLoginRecords();//save the log_in record.
+					writeDataFiles();
 					System.out.println("Good bye!");
 					System.exit(0);
 				} //End switch.
@@ -203,6 +211,7 @@ public class UserInterface {
 					break;
 				case 2: //Log off.
 					managerMaintainer.getManager(id).writeManagerLoginRecords();
+					writeDataFiles();
 					System.out.println("Good bye!");
 					System.exit(0);
 				} //End switch.
@@ -215,6 +224,7 @@ public class UserInterface {
 			} //End else if.
 			else { //Invalid input
 				System.out.println("Invalid input for user type! Terminating.");
+				writeDataFiles();
 				System.exit(0);
 			} //End else.
 		} //End while loop.
@@ -253,5 +263,15 @@ public class UserInterface {
 		//TODO Add operator menu choices!
 		
 	} //End printOperatorMenu() method.
+	
+	/**
+	 * 
+	 */
+	public void writeDataFiles() {
+		providerMaintainer.writeDataFiles();
+		memberMaintainer.writeDataFiles();
+		managerMaintainer.writeDataFiles();
+		return;
+	} //End writeDataFiles() method.
 	
 } //End UserInterface class.

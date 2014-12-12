@@ -39,34 +39,31 @@ public class ProviderMaintainer {
 	{
 		//this method get all providers from file and write them into arrayList.
 		FileReader inputStream = null;
+		Scanner scanner = null;
+		String delims = "[ ]+";
+		
 		try{
 			inputStream = new FileReader("Providers");
-			Scanner file = null;
-			file = new Scanner(inputStream);
+			scanner = new Scanner(inputStream);
 			
-			String delims = "[ ]+";
-			while(file.hasNext())
+			while(scanner.hasNext())
 			{
-				String info = file.nextLine();//read a line from file.
+				String info = scanner.nextLine();//read a line from file.
 				String[] providerInfo = info.split(delims);
 				Provider p = new Provider(providerInfo[0],providerInfo[1],providerInfo[2],providerInfo[3],providerInfo[4],Integer.parseInt(providerInfo[5]));
 				//put this newly found provider to providerList.
 				providerList.add(p);
 			} //End while.
 			 
+			scanner.close();
+			inputStream.close();
 		} //End try.
 		catch(Exception e){
-			System.out.println("File not found.");
+			System.out.println("Error reading providers into file.");
 		} //End catch.
-		try {
-			inputStream.close();
-			
-		} //End try.
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} //End catch.
-	}
+		
+		
+	} //End ProviderMaintainer() constructor.
 	
 	/**
 	 * checkProviderDirectory() method calls checkProviderDirectory() method in Provider class
@@ -98,6 +95,14 @@ public class ProviderMaintainer {
 		}
 		
 	}
+	
+	/**
+	 * 
+	 * @param p
+	 */
+	public void addProvider(Provider p) {
+		providerList.add(p);
+	} //End addProvider(Provider) method.
 	
 	/**
 	 * removeProvider() method removes a provider from both providerList as well as "Providers" file.
@@ -234,5 +239,127 @@ public class ProviderMaintainer {
 		
 		return;
 	} //End printProviderReport() method.
-
-}
+	
+	public int getTotalConsults() {
+		int total = 0;
+		for(int i = 0; i < providerList.size(); i++) {
+			total = total + providerList.get(i).getServiceList().size();
+		} //End for loop.
+		
+		return total;
+	} //End getTotalConsults() method.
+	
+	public int getTotalActiveProviders() {
+		int total = 0;
+		for(int i = 0; i < providerList.size(); i++) {
+			if(providerList.get(i).getServiceList().size() > 0) {
+				total = total + 1;
+			} //End if.
+		} //End for loop.
+		
+		return total;
+	} //End getTotalActiveProviders() method.
+	
+	public double getTotalFees() {
+		double totalFees = 0.0;
+		ArrayList<Service> serviceList;
+		
+		for(int i = 0; i < providerList.size(); i++) {
+			if(providerList.get(i).getServiceList().size() > 0) {
+				serviceList = providerList.get(i).getServiceList();
+				
+				for( int j = 0; j < serviceList.size(); j++) {
+					totalFees = totalFees + serviceList.get(j).getFee();
+				} //End for loop.
+			} //End if.
+		} //End for loop.
+		
+		return totalFees;
+	} //End getTotalFees() method.
+	
+	public void readServicesFromFile() {
+		//Read services into providers' service lists.
+		File serviceFile;
+		Scanner scanner = null;
+		String currentLine;
+		String lineSegment;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		String date;
+		Date tDate;
+		int providerNumber;
+		int memberNumber;
+		String memberName;
+		int serviceCode;
+		String comment;
+		
+		try {
+			for(int i = 0; i < providerList.size(); i++) {
+				serviceFile = new File(providerList.get(i).getName()+"_ServicesFile");
+				if(!serviceFile.exists()) {
+					//No services for this provider.
+					continue;
+				} //End if.
+				scanner = new Scanner(serviceFile);
+				
+				//old
+				while(scanner.hasNext()) {
+					currentLine = scanner.nextLine();
+					if(currentLine.contains("********************")) {
+						if(scanner.hasNext()) {
+							currentLine = scanner.nextLine();
+							if(currentLine.contains("Current date and time:")) {
+								//get current date when service was entered.
+								lineSegment = currentLine.substring(22);
+								tDate = dateFormat.parse(lineSegment);
+								//Get the date service was received.
+								currentLine = scanner.nextLine();
+								date = currentLine.substring(27);
+								//Get the provider number.
+								currentLine = scanner.nextLine();
+								providerNumber = Integer.parseInt(currentLine.substring(17));
+								//Get the member number.
+								currentLine = scanner.nextLine();
+								memberNumber = Integer.parseInt(currentLine.substring(15));
+								//Get the member name.
+								currentLine = scanner.nextLine();
+								memberName = currentLine.substring(13);
+								//Get the service code.
+								currentLine = scanner.nextLine();
+								serviceCode = Integer.parseInt(currentLine.substring(14));
+								//Get the comments.
+								currentLine = scanner.nextLine();
+								comment = currentLine.substring(10);
+								
+								//Create the Service object and add it to this provider's list.
+								providerList.get(i).getServiceList().add(Service.makeService(date, tDate, memberNumber, memberName, providerNumber, getProvider(providerNumber).getName(), serviceCode, comment));
+								
+								Service s = Service.makeService(date, tDate, memberNumber, memberName, providerNumber, getProvider(providerNumber).getName(), serviceCode, comment);
+								System.out.println(s.toString());
+							} //End if.
+							else {
+								continue;
+							} //End else.
+						} //End if.
+					} //End if.
+				} //End while loop.
+			} //End for.
+			
+			scanner.close();
+			System.out.println("Provider service lists have been initialized.");
+		} //End try.
+		catch(Exception e) {
+			System.out.println("Error reading services into providers' service lists.");
+			e.printStackTrace();
+		} //End catch.
+		
+		return;
+	} //End readServicesFromFile() method.
+	
+	public void writeDataFiles() {
+		//TODO finish this
+		
+		
+		return;
+	} //End writeDataFiles() method.
+	
+} //End ProviderMaintainer class.

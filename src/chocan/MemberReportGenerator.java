@@ -26,27 +26,15 @@ public class MemberReportGenerator {
 	public void printMemberReport(Member member) {
 		FileWriter         fw          = null;
         File               file        = null;
-        //Member             member      = null;
         ArrayList<Service> serviceList = member.getServiceList();
-        //boolean            memberFound = false;
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
         Date date = new Date();
         
-        //for(int i = 0; i < memberList.size(); i++) {
-        //	if(memberList.get(i).getMemberID() == memberID) {
-        //		member = memberList.get(i);
-        //		serviceList = member.getServiceList();
-        //		memberFound = true;
-        //		break;
-        //	} //End if.
-        //} //End for loop.
-        //if(memberFound == false) {
-        //	System.out.println("The given member ID was not found in the list. Operation unsuccessful.");
-        //	return;
-        //} //End if.
-        
+        if(serviceList.size() == 0) {
+        	return;
+        } //end if.
         try {
-            file = new File(member.getMemberID()+" "+dateFormat.format(date)+".txt");
+            file = new File(member.getMemberID()+" "+dateFormat.format(date));
             if(!file.exists()) {
                 file.createNewFile();
             } //End if.
@@ -64,6 +52,7 @@ public class MemberReportGenerator {
             	fw.write("Date of Service: "+serviceList.get(i).getDate()+System.getProperty("line.separator"));
             	fw.write("Provider Name  : "+serviceList.get(i).getProviderName()+System.getProperty("line.separator"));
             	fw.write("Service Name   : "+serviceList.get(i).getServiceName()+System.getProperty("line.separator"));
+            	fw.write("****************"+System.getProperty("line.separator"));
             } //End for loop.
             fw.write("******************************"+System.getProperty("line.separator"));
             
