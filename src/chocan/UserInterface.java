@@ -1,18 +1,14 @@
 package chocan;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
+import java.io.*;
+import java.text.*;
+import java.util.*;
 
+/**
+ * The UserInterface class provides the user interface for the ChocAn program.
+ * @author Lingxi, Nate
+ */
 public class UserInterface {
-
 	int command;
 	boolean done;
 	int employeeType;//1=provider,2=manager,3=operator.
@@ -22,6 +18,10 @@ public class UserInterface {
 	ProviderMaintainer providerMaintainer =null;
 	ManagerMaintainer managerMaintainer = null;
 	
+	/**
+	 * Constructor for the UserInterface class.
+	 * @throws IOException
+	 */
 	public UserInterface() throws IOException
 	{
 		done=false;
@@ -34,7 +34,10 @@ public class UserInterface {
 		
 	} //End UserInterface() constructor.
 	
-	/*This method prints welcome page and determine employee type.*/
+	/**
+	 * This method prints the login page and takes input for the employee type.
+	 * @throws IOException
+	 */
 	public void printLoginPage() throws IOException
 	{
 		System.out.println("Welcome to ChocAn!");

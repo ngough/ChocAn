@@ -333,9 +333,6 @@ public class ProviderMaintainer {
 								
 								//Create the Service object and add it to this provider's list.
 								providerList.get(i).getServiceList().add(Service.makeService(date, tDate, memberNumber, memberName, providerNumber, getProvider(providerNumber).getName(), serviceCode, comment));
-								
-								Service s = Service.makeService(date, tDate, memberNumber, memberName, providerNumber, getProvider(providerNumber).getName(), serviceCode, comment);
-								System.out.println(s.toString());
 							} //End if.
 							else {
 								continue;
@@ -346,7 +343,7 @@ public class ProviderMaintainer {
 			} //End for.
 			
 			scanner.close();
-			System.out.println("Provider service lists have been initialized.");
+			//System.out.println("Provider service lists have been initialized.");
 		} //End try.
 		catch(Exception e) {
 			System.out.println("Error reading services into providers' service lists.");

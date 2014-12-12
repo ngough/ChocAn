@@ -37,7 +37,6 @@ public class ProviderReportGenerator {
         } //End if.
         try {
             file = new File(provider.getProviderID()+" "+dateFormat.format(date).toString());
-            System.out.println(provider.getProviderID()+" "+dateFormat.format(date).toString());
             if(!file.exists()) {
                 file.createNewFile();
             } //End if.
@@ -76,10 +75,9 @@ public class ProviderReportGenerator {
             } //End if.
             fw = new FileWriter(file);
             fw.write(provider.getName()+" "+provider.getProviderID()+" $"+feeTotal+System.getProperty("line.separator"));
+            
             fw.flush();
             fw.close();
-            
-            System.out.println("Report generated successfully!");
         } //End try.
         catch (IOException e) {
             e.printStackTrace();

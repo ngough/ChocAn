@@ -109,8 +109,8 @@ public class Member extends Person{
 		String comment = service.getComment();
 		writer.append("Comments: "+comment+System.getProperty("line.separator"));
 		
-		double fee = service.getFee();
-		writer.append("Fee: "+String.valueOf(fee)+System.getProperty("line.separator"));
+		//double fee = service.getFee();
+		//writer.append("Fee: "+String.valueOf(fee)+System.getProperty("line.separator"));
 		
 		writer.append("********************"+System.getProperty("line.separator"));
 		writer.close();

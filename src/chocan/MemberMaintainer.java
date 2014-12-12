@@ -16,17 +16,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * 
- * @author lingxi
- *  1.memberMaintainer Class is responsible for storing and manipulating members.
- * 	2.When a new MemberMaintaner class object gets instantiated, it read from a file which stores members' information,
- * 	  creates member objects, and dump all members into an arrayList called memberList.
- *  3.This class can then process those members in the list and write them back to file after all the changes been done.
+ * 1.memberMaintainer Class is responsible for storing and manipulating members.
+ * 2.When a new MemberMaintaner class object gets instantiated, it read from a file which stores members' information,
+ *   creates member objects, and dump all members into an arrayList called memberList.
+ * 3.This class can then process those members in the list and write them back to file after all the changes been done.
+ * @author lingxi, Nate
  */
 public class MemberMaintainer {
 
 	/**
-	 * providerList stores all member objects created from "Member" file.
+	 * memberList stores all member objects created from "Member" file.
 	 */
 	ArrayList<Member> memberList = new ArrayList<Member>();
 	
@@ -159,6 +158,7 @@ public class MemberMaintainer {
 	 * loginMember() method logs in a member by taking that member's ID, finding that member in memberList, 
 	 * and writing current date+time into that member's loginRecords
 	 * @param memberID is the ID number for the member who wants to log in the system.
+	 * @throws IOException
 	 */
 	public void loginMember(int memberID) throws IOException
 	{				
@@ -201,6 +201,9 @@ public class MemberMaintainer {
 		return p;
 	}
 	
+	/**
+	 * This method prints the member reports for all applicable members.
+	 */
 	public void printMemberReports() {
 		MemberReportGenerator memberReportGenerator = new MemberReportGenerator();
 		
@@ -211,10 +214,18 @@ public class MemberMaintainer {
 		return;
 	} //End printMemberReports() method.
 	
+	/**
+	 * This method adds the passed member to the member list.
+	 * @param m The member to be added.
+	 */
 	public void addMember(Member m) {
 		memberList.add(m);
 	} //End addMember(Member) method.
 	
+	/**
+	 * This method reads services from the service files into memory.
+	 * @param providerMaintainer A ProviderMaintainer object, to get provider IDs from.
+	 */
 	public void readServicesFromFile(ProviderMaintainer providerMaintainer) {
 		//Read services into members' service lists.
 		File serviceFile;
@@ -270,10 +281,6 @@ public class MemberMaintainer {
 								
 								//Create the Service object and add it to this provider's list.
 								memberList.get(i).getServiceList().add(Service.makeService(date, tDate, memberNumber, memberName, providerNumber, providerMaintainer.getProvider(providerNumber).getName(), serviceCode, comment));
-								
-								//TODO remove this test stuff.
-								Service s = Service.makeService(date, tDate, memberNumber, memberName, providerNumber, providerMaintainer.getProvider(providerNumber).getName(), serviceCode, comment);
-								System.out.println(s.toString() + "member service");
 							} //End if.
 							else {
 								continue;
@@ -284,7 +291,7 @@ public class MemberMaintainer {
 			} //End for.
 			
 			scanner.close();
-			System.out.println("Member service lists have been initialized.");
+			//System.out.println("Member service lists have been initialized.");
 		} //End try.
 		catch(Exception e) {
 			System.out.println("Error reading services into members' service lists.");
@@ -294,6 +301,9 @@ public class MemberMaintainer {
 		return;
 	} //End readServicesFromFile(ProviderMaintainer) method.
 	
+	/**
+	 * This method writes back the member data to disk.
+	 */
 	public void writeDataFiles() {
 		Member currentMember;
 		File memberFile;

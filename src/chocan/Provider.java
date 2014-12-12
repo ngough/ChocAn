@@ -76,6 +76,9 @@ public class Provider extends Person {
 		int memberID = service.getMemberID();
 		writer.append("Member number: "+String.valueOf(memberID)+System.getProperty("line.separator"));
 		
+		String memberName = service.getMemberName();
+		writer.append("Member name: "+memberName+System.getProperty("line.separator"));
+		
 		int serviceCode = service.getServiceCode();
 		writer.append("Service code: "+String.valueOf(serviceCode)+System.getProperty("line.separator"));
 		
